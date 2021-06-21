@@ -58,3 +58,14 @@ def getresult(image_box):
 # возможно, лучше убрать и закомментировать эти строки
 # fcount, fimage = read_image_files(1,'./static')
 # decode = getresult(fimage)
+
+
+def read_image_files(files_max_count,dir_name):
+  files = [item.name for item in os.scandir(dir_name) if item.is_file()]
+  files_count = files_max_count
+  if(files_max_count>len(files)): # определяем количество файлов не больше max
+    files_count = len(files)
+  image_box = [[]]*files_count
+  for file_i in range(files_count): # читаем изображения в список
+    image_box[file_i] = Image.open(dir_name+'/'+files[file_i]) # / ??
+  return files_count, image_box
