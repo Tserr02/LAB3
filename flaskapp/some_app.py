@@ -1,10 +1,16 @@
-print("Hello world")
+import matplotlib
+from flask_bootstrap import Bootstrap
 from flask import Flask
 app = Flask(__name__)
+bootstrap = Bootstrap(app)
+
+
 #декоратор для вывода страницы по умолчанию
-@app.route("/")
-def hello():
-  return " <html><head></head> <body> Hello World! </body></html>"
+
+#@app.route("/")
+#def hello():
+  #return " <html><head></head> <body> Hello World! </body></html>"
+  
 if __name__ == "__main__":
   app.run(host='127.0.0.1',port=5000)
 
@@ -18,7 +24,8 @@ def data_to():
   some_str = 'Hello my dear friends!'
   some_value = 10
   #передаем данные в шаблон и вызываем его
-  return render_template('simple.html',some_str = some_str,some_value = some_value,some_pars=some_pars)
+  return render_template('simple.html',some_str = some_str,
+                         some_value = some_value,some_pars=some_pars)
 
 
 # модули работы с формами и полями в формах
@@ -28,17 +35,19 @@ from wtforms import StringField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 # используем csrf токен, можете генерировать его сами
-SECRET_KEY = 'secret'
-app.config['SECRET_KEY'] = SECRET_KEY
+
+#SECRET_KEY = 'secret'
+#app.config['SECRET_KEY'] = SECRET_KEY
+
 # используем капчу и полученные секретные ключи с сайта google
 
 app.config['RECAPTCHA_USE_SSL'] = False
-app.config['RECAPTCHA_PUBLIC_KEY'] = 'сюда поместить ключ из google'
-app.config['RECAPTCHA_PRIVATE_KEY'] = 'сюда поместить секретный ключ из google'
+app.config['RECAPTCHA_PUBLIC_KEY'] = '6LduPkwbAAAAAKiHqZgfSGnxczwXgVHj9bb13QQk'
+app.config['RECAPTCHA_PRIVATE_KEY'] = '6LduPkwbAAAAAAo2dCznulELXW3JXNf1wtWSjSzD'
 app.config['RECAPTCHA_OPTIONS'] = {'theme': 'white'}
-# обязательно добавить для работы со стандартными шаблонами
-from flask_bootstrap import Bootstrap
-bootstrap = Bootstrap(app)
+app.config['SECRET_KEY'] = 'secret'
+
+
 # создаем форму для загрузки файла
 class NetForm(FlaskForm):
   # поле для введения строки, валидируется наличием данных
@@ -55,6 +64,8 @@ class NetForm(FlaskForm):
   recaptcha = RecaptchaField()
   #кнопка submit, для пользователя отображена как send
   submit = SubmitField('send')
+  
+
 # функция обработки запросов на адрес 127.0.0.1:5000/net
 # модуль проверки и преобразование имени файла
 # для устранения в имени символов типа / и т.д.
@@ -63,6 +74,7 @@ import os
 # подключаем наш модуль и переименовываем
 # для исключения конфликта имен
 import net as neuronet
+
 # метод обработки запроса GET и POST от клиента
 @app.route("/net",methods=['GET', 'POST'])
 def net():
@@ -82,6 +94,8 @@ def net():
     # записываем в словарь данные классификации
     for elem in decode:
       neurodic[elem[0][1]] = elem[0][2]
+      
+      
     # сохраняем загруженный файл
     form.upload.data.save(filename)
   # передаем форму в шаблон, так же передаем имя файла и результат работы нейронной
