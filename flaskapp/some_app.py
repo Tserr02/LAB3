@@ -7,13 +7,21 @@ bootstrap = Bootstrap(app)
 
 #декоратор для вывода страницы по умолчанию
 
-#@app.route("/")
-#def hello():
-  #return " <html><head></head> <body> Hello World! </body></html>"
+@app.route("/")
+def hello():
+  return " <html><head></head> <body> Hello World! </body></html>"
   
-if __name__ == "__main__":
-  app.run(host='127.0.0.1',port=5000)
-
+#if __name__ == "__main__":
+  #app.run(host='127.0.0.1',port=5000)
+  
+if __name__ == '__main__':
+    HOST = environ.get('SERVER_HOST', 'localhost')
+    try:
+        PORT = int(environ.get('SERVER_PORT', '5555'))
+    except ValueError:
+        PORT = 5555
+    app.run(HOST, PORT)
+    
   
 from flask import render_template
 #наша новая функция сайта
