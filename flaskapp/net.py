@@ -40,7 +40,7 @@ def read_image_files(files_max_count,dir_name):
  image_box = [[]]*files_count
 for file_i in range(files_count): # читаем изображения в список
   image_box[file_i] = Image.open(dir_name+'/'+files[file_i]) # / ??
- return files_count, image_box
+return files_count, image_box
 # возвращаем результаты работы нейронной сети
 def getresult(image_box):
  files_count = len(image_box)
